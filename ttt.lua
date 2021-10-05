@@ -18,10 +18,15 @@ dofile("get_field.lua")
 dofile("check_win.lua")
 dofile("change_player.lua")
 dofile("clear_screen.lua")
+dofile("ai_normal.lua")
 
-game.player = 1             -- Game is 0 stopped, 1 - 2 Player.
-game.win = 0                -- Game is drawn. -1 the game is running
+math.randomseed(os.time())                  -- Initalize the random-seed
+
+game.player = 1                             -- Game is 0 stopped, 1 - 2 Player.
+game.win = 0                                -- Game is drawn. -1 the game is running
 game.exit = 0
+game.ai = 0                                 -- No AI-Player
+
 local answer = ""
 game.lib.clrscr()
 
@@ -44,18 +49,50 @@ repeat -- The programm itself
          game.exit = 0
          game.lib.reset_field()
 
-         repeat                             -- Start the Game
+         answer = ""
+         print("Do you want to start an AI (y/n)?")
+         io.read()
+         answer = io.read(1)
+         answer = string.lower(answer)
+
+         if(answer == "n") then
+             game.ai = 0
+
+         else
+
+             repeat
+                print("Which Player is the AI (1/2)?")
+                answer = io.read("*n")
+
+            until(answer >= 1 and answer <= 2)
+
+            game.ai = answer
+
+        end -- if(answer == "n"
+
+
+         repeat                                         -- Start the Game
             game.lib.clrscr()
             game.lib.show_field()
-            game.lib.get_field()
+
+            if(game.player == game.ai) then             -- Player is a bot
+                local choose = game.lib.ai_normal()
+                print(choose)
+                game.field[choose] = game.player
+
+            else                                        -- Player is an Human
+                game.lib.get_field()
+
+            end
+
             game.lib.change_player()
             game.win = game.lib.check_win()
-            
+
          until(game.win >= 0)
 
          print("\n")
          game.lib.show_field()
-         if(game.win == 0) then 
+         if(game.win == 0) then
             print("Nobody has won, the game is drawn.")
 
          else
@@ -65,7 +102,7 @@ repeat -- The programm itself
 
          print("\n\n")
          io.read(1)
-         
+
     end -- if(string.lower
 
 until(game.exit == 1)
