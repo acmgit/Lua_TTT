@@ -22,7 +22,7 @@ function game.lib.get_field()
     repeat
         print("Player " .. player .. ". Which field do you choose?")
         value = io.read("*n")           -- Get a Number
-        if(value < 1) or (value > 9) then
+        if(not value == nil) and ((value < 1) or (value > 9)) then
             print("The number must be between 1 and 9.")
             valid = false
 

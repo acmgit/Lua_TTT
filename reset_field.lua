@@ -7,4 +7,6 @@ function game.lib.reset_field()
 
     end
 
+    game.count = 1                      -- set to the first move
+
 end -- reset_field(

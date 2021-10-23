@@ -20,7 +20,7 @@ function game.lib.check_win()
         if(game.field[4] == i and game.field[5] == i and game.field[6] == i) then win = i return win end
         if(game.field[7] == i and game.field[8] == i and game.field[9] == i) then win = i return win end
 
-        -- vertikal
+        -- vertical
         if(game.field[1] == i and game.field[4] == i and game.field[7] == i) then win = i return win end
         if(game.field[2] == i and game.field[5] == i and game.field[8] == i) then win = i return win end
         if(game.field[3] == i and game.field[6] == i and game.field[9] == i) then win = i return win end

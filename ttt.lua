@@ -11,6 +11,7 @@
 game = {}
 game.field = {}
 game.lib = {}
+game.memory = {}
 
 dofile("reset_field.lua")
 dofile("show_field.lua")
@@ -19,12 +20,15 @@ dofile("check_win.lua")
 dofile("change_player.lua")
 dofile("clear_screen.lua")
 dofile("ai_normal.lua")
+dofile("write2memory.lua")
+dofile("store_memory.lua")
 
 math.randomseed(os.time())                  -- Initalize the random-seed
 
 game.player = 1                             -- Game is 0 stopped, 1 - 2 Player.
 game.win = 0                                -- Game is drawn. -1 the game is running
 game.exit = 0
+game.count = 0
 game.ai = 0                                 -- No AI-Player
 game.file = nil                             -- Logfile
 
@@ -86,6 +90,8 @@ repeat -- The programm itself
 
             end
 
+            game.lib.write2memory(game.count)           -- Writes the Board to the Memory
+            game.count = game.count + 1                 -- next Move
             game.lib.change_player()
             game.win = game.lib.check_win()
 
@@ -93,14 +99,24 @@ repeat -- The programm itself
 
          print("\n")
          game.lib.show_field()
+         local weight = 0                               -- Game is Drawn, Weight = 0
+         
          if(game.win == 0) then
             print("Nobody has won, the game is drawn.")
 
          else
             print("Congratulations Player " .. game.win .. ". You have won the Game.")
-
-         end -- if(game.win
-
+            if(game.win == 1) then 
+                weight = -100                           -- Player 1 has won, Weight = -100
+                
+            else
+                weight = 100                            -- Player 2 has won, Weight = 100
+                
+            end -- if(game.win == 1
+                
+        end -- if(game.win == 0
+            
+        game.lib.store_memory(weight)                         -- Write the Log to brain
          print("\n\n")
          io.read(1)
 
