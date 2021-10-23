@@ -26,6 +26,7 @@ game.player = 1                             -- Game is 0 stopped, 1 - 2 Player.
 game.win = 0                                -- Game is drawn. -1 the game is running
 game.exit = 0
 game.ai = 0                                 -- No AI-Player
+game.file = nil                             -- Logfile
 
 local answer = ""
 game.lib.clrscr()
